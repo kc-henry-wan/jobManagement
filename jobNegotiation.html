@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs under negotiation </title>
+    <link rel="stylesheet" href="jmp23.css">
+    
+</head>
+<body onload=fetchJobs()>
+
+    <h1>Jobs under negotiation </h1>
+
+    <input type="hidden" id="pharmacyCode" value="WBP"/>
+
+    <div id="error" class="error-message"></div>
+
+    <table id="jobTable" class="table1">
+        <thead>
+            <tr>
+                <th>Job Reference</th>
+                <th>Branch Name</th>
+                <th width=100>Job Date/Time</th>
+                <th>Total Paid hour</th>
+                <th>Original Hourly Rate (£) / Total (£)</th>
+                <th>Purposed Hourly Rate (£) / Total (£)</th>
+                <th>Counter Purposed Hourly Rate (£) / Total (£)</th>
+                <th>Lunch Arrangement</th>
+                <th>Parking Option</th>
+                <th>Rate Per Mile (£)</th>
+                <th width=100>Address</th>
+                <th>Negotiation Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+
+    <script src="config/config.js"></script>
+    <script src="jobNegotiation.js"></script>
+
+</body>
+</html>

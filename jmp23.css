@@ -1,0 +1,109 @@
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+//            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        .login-container button {
+            width: 98%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .login-container button:hover {
+            background-color: #218838;
+        }
+        
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        .table1 {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table1, th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .redText {
+            color: red;
+            font-weight: bold;
+        }
+        .greenText {
+            color: green;
+            font-weight: bold;
+        }
+        .job-negotiate-reason {
+            text-align: left;            
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+        }
+
+        .new-button-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .round-button {
+            background-color: #007BFF; /* Blue background */
+            color: white; /* White text */
+            border: none; /* No border */
+            border-radius: 50%; /* Fully rounded */
+            padding: 10px 25px; /* Padding for size */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Transition for hover effect */
+            outline: none; /* Remove outline */
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .round-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }

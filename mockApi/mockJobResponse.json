@@ -1,0 +1,6 @@
+{"status":"status", "responseCode":"", "errorCode":"", "jobs":
+[
+{"jobID": "ABC1234", "branchName":"ABC Phymacy", "jobDate":"15 Oct 2024", "jobStartTime":"09:00", "jobEndTime":"18:00", "lunchArrangement": "60 min unpaid break", "ratePerMile": 1.5, "address": "123 Main St", "postalCode":"AA1 5XX" },
+{"jobID": "ABC1235", "branchName":"ABC Phymacy", "jobDate":"16 Oct 2024", "jobStartTime":"10:00", "jobEndTime":"18:00", "lunchArrangement": "60 min unpaid break", "ratePerMile": 1.5, "address": "345 Main St", "postalCode":"AA1 6TT" },
+{"jobID": "ABC1236", "branchName":"CDE Phymacy", "jobDate":"17 Oct 2024", "jobStartTime":"09:00", "jobEndTime":"17:00", "lunchArrangement": "60 min unpaid break", "ratePerMile": 1.5, "address": "677 Main St", "postalCode":"AA1 9GG" }
+]}

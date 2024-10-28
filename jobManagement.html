@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Management Page</title>
+    <link rel="stylesheet" href="jmp23.css">
+</head>
+<body onload=fetchJobs()>
+
+    <h1>Job Management Page</h1>
+
+    <div class="filter-container">
+         <input type="hidden" id="pharmacyCode" placeholder="Enter Pharmacy Code" value="WBP"/>
+
+        <label for="fromDate">From Date:</label>
+        <input type="date" id="fromDate" />
+
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate" />
+
+        <button class='round-button' onclick="fetchJobs()">Fetch Jobs</button>
+    </div>
+
+    <div id="error" class="error-message"></div>
+
+    <table id="jobTable" class="table1">
+        <thead>
+            <tr>
+                <th>Job Reference</th>
+                <th>Branch Name</th>
+                <th width=100>Job Date / Time</th>
+                <th>Total Paid hour</th>
+                <th>Hourly Rate (£) / Total (£)</th>
+                <th>Lunch Arrangement</th>
+                <th>Parking Option</th>
+                <th>Rate Per Mile (£)</th>
+                <th width=100>Address</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="new-button-container">
+        <button class='round-button' onclick="addJobs()">Add New Job</button>
+    </div>
+
+
+    <script src="config/config.js"></script>
+    <script src="jobManagement.js"></script>
+
+</body>
+</html>
