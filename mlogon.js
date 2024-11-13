@@ -1,11 +1,4 @@
 
-// Hash the password for security (example function, use a proper library in real applications)
-function hashPassword(password) {
-    // For demonstration, returning the password directly.
-    // In a real application, use a hashing library like bcrypt or SHA-256
-    return password; 
-}
-
 // Validation function for email
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email pattern
@@ -14,7 +7,7 @@ function isValidEmail(email) {
 
 // Validation function for password
 function isValidPassword(password) {
-    return password.length >= 12 && password.length <= 20;
+    return password.length >= 8 && password.length <= 20;
 }
 
 // Validation function for pharmacy code
@@ -40,7 +33,7 @@ async function login() {
     }
 
     if (!isValidPassword(password)) {
-        errorMessage.innerHTML = "Password must be between 12 and 20 characters long.";
+        errorMessage.innerHTML = "Password must be between 8 and 20 characters long.";
         return;
     }
 
@@ -54,7 +47,7 @@ async function login() {
     const requestData = {
         'id':1,
         'username': email,
-        'password': hashPassword(password),
+        'password': password,
         'phamacyCode': pharmacyCode
     };
 
@@ -71,11 +64,10 @@ async function login() {
         // Parse the response JSON
         const result = await response.json();
 
-        if (response.ok && result.status === "success") {
-            // Handle successful login
-            alert("Login successful! Token: " + result.token);
-            // save the token in localStorage/sessionStorage
-            localStorage.setItem("mAuthToken", result.token);
+        if (response.ok && result.apiStatus === "Success") {
+//            alert("Login successful! Token: " + result.data.accessToken);
+
+            localStorage.setItem("mAuthToken", result.data.accessToken);
             window.location.href = "jobManagement.html";
         } else {
             // Handle login errors

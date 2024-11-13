@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Add/Update Branch</title>
+        <link rel="stylesheet" href="jmp23.css">
+        <style>
+        </style>
+    </head>
+    <body>
+
+        <h1>Add/Update Branch</h1>
+        <form id="branchForm">
+
+            <div id="error" class="error-message"></div>
+
+            <table class="form-table">
+                <tr>
+                    <td><label for="branchName">Branch Name</label></td>
+                    <td><input type="text" id="branchName" name="branchName" maxlength="255"></td>
+                </tr>
+                <tr>
+                    <td><label for="address1">Address line 1</label></td>
+                    <td><input type="text" id="address1" name="address1" maxlength="50"></td>
+                </tr>
+                <tr>
+                    <td><label for="address2">Address line 2</label></td>
+                    <td><input type="text" id="address2" name="address2" maxlength="50"></td>
+                </tr>
+                <tr>
+                    <td><label for="postalCode">Postal Code</label></td>
+                    <td><input type="text" id="postalCode" name="postalCode" maxlength="10"></td>
+                </tr>
+                <tr>
+                    <td><label>Status</label></td>
+                    <td><input type="text" id="status" name="status" value="New" disabled></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
+                        <button type="submit" id="actionButton" class='round-button'>Submit</button>
+                    </td>
+                </tr>
+            </table>
+
+            <input type=hidden id="branchId" name="branchId" value="">
+            <input type=hidden id="updatedAt" name="updatedAt" value="">
+
+        </form>
+
+        <script src="config/config.js"></script>
+
+        <script>
+
+                            const branchId = new URLSearchParams(window.location.search).get('branchId');
+                            const actionMode = new URLSearchParams(window.location.search).get('mode');
+
+// Function to go back to the previous page
+                            function goBack() {
+                                window.history.back();
+                            }
+
+// When the page loads, get the action from the URL and update the button label
+                            window.onload = function () {
+                                const actionButton = document.getElementById('actionButton');
+
+                                if (actionMode.toUpperCase() === 'EDIT') {
+                                    actionButton.textContent = 'Submit';
+                                } else if (actionMode.toUpperCase() === 'DELETE') {
+                                    actionButton.textContent = 'Delete';
+                                } else {
+                                    actionButton.hidden = true;
+                                    document.querySelectorAll('input').forEach(input => {
+                                        input.setAttribute('disabled', true);
+                                    });
+                                }
+                            };
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                if (branchId) {
+                                    loadBranchData(branchId);
+                                }
+
+                                document.getElementById('branchForm').addEventListener('submit', handleFormSubmit);
+                            });
+
+                            async function loadBranchData(branchId) {
+                                const mToken = localStorage.getItem('mAuthToken');
+                                const errorContainer = document.getElementById("error");
+                                errorContainer.innerHTML = ''; // Clear any error messages
+
+//                try {
+                                if (!mToken) {
+                                    alert('Session expired. Please log in again.');
+                                    return;
+                                }
+
+                                const response = await fetch(config.apiBranchDetailUrl + '?' + branchId, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': 'Bearer ' + mToken
+                                    }
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+
+                                if (response.status === 403 || response.status === 401) {
+                                    throw new Error('Session expired or unauthorized. Please log in again. status:' + response.status);
+                                    localStorage.removeItem('mAuthToken');
+
+                                    // Redirect to login page or prompt for login
+                                    window.location.href = "mlogon.html";
+                                }
+
+                                const responseBody = await response.json();
+
+                                if (responseBody.status === 'error') {
+                                    throw new Error(`Error Code: ${responseBody.errorCode}`);
+                                }
+
+                                const branchData = responseBody.data;
+
+                                Object.keys(branchData).forEach(key => {
+                                    const input = document.getElementById(key);
+                                    if (input && branchData[key] !== undefined && branchData[key] !== null) {
+                                        input.value = branchData[key];
+                                    }
+                                });
+
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load branch data: ' + error;
+//                }
+                            }
+
+                            async function handleFormSubmit(event) {
+                                const mToken = localStorage.getItem('mAuthToken');
+                                const errorContainer = document.getElementById("error");
+                                errorContainer.innerHTML = ''; // Clear any error messages
+//                try {
+
+                                if (!mToken) {
+                                    alert('Session expired. Please log in again.');
+                                    return;
+                                }
+
+                                event.preventDefault();
+
+                                const branchData = {
+                                    id: 8,
+                                    branchName: document.getElementById('branchName').value,
+                                    address1: document.getElementById('address1').value,
+                                    address2: document.getElementById('address2').value,
+                                    postalCode: document.getElementById('postalCode').value,
+                                    updatedAt: document.getElementById('updatedAt').value
+                                };
+
+                                const method = branchId ? 'POST' : 'POST';
+                                const url = branchId ? config.apiBranchUpdateUrl + '?' + document.getElementById('branchId').value : config.apiBranchAddUrl;
+
+                                const response = await fetch(url, {
+                                    method: method,
+                                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + mToken},
+                                    body: JSON.stringify(branchData)
+                                });
+
+                                if (response.ok) {
+                                    alert('Branch record has been saved successfully.');
+                                    window.location.href = 'branch.html';
+                                } else {
+                                    alert('Failed to save branch record.');
+                                }
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load branch data: ' + error;
+//                }
+                            }
+        </script>
+    </body>
+</html>

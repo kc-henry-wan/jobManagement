@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pharmacist Management Page</title>
+        <link rel="stylesheet" href="jmp23.css">
+    </head>
+    <body onload=fetchData()>
+
+        <h1>Pharmacist Management Page</h1>
+
+        <div class="filter-container">
+            <input type="hidden" id="pharmacyCode" value="WBP"/>
+
+            <select id="statusSelection" name="statusSelection">
+                <option value="">All</option>
+                <option value="Open" selected>Active</option>
+                <option value="Deleted">Deleted</option>
+            </select>
+
+            <button class='round-button' onclick="fetchData()">Fetch Data</button>
+        </div>
+
+        <div id="error" class="error-message"></div>
+
+        <div class="table-container">
+            <table id="pharmacistTable" class="table1">
+                <thead>
+                    <tr>
+                        <th>Pharmacist Name</th>
+                        <th>Mobile</th>
+                        <th>Address</th>
+                        <th>Postal Code</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="new-button-container">
+            <button class='round-button' onclick="addPharmacist()">Add New Pharmacist</button>
+        </div>
+
+
+        <script src="config/config.js"></script>
+        <script src="pharmacist.js"></script>
+
+    </body>
+</html>

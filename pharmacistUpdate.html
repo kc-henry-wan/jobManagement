@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Add/Update Pharmacist</title>
+        <link rel="stylesheet" href="jmp23.css">
+        <style>
+        </style>
+    </head>
+    <body>
+
+        <h1>Add/Update Pharmacist</h1>
+        <form id="pharmacistForm">
+
+            <div id="error" class="error-message"></div>
+
+            <table class="form-table">
+                <tr>
+                    <td><label for="firstName">First Name</label></td>
+                    <td><input type="text" id="firstName" name="firstName" maxlength="255"></td>
+                </tr>
+                <tr>
+                    <td><label for="lastName">Last Name</label></td>
+                    <td><input type="text" id="lastName" name="lastName" maxlength="255"></td>
+                </tr>
+                <tr>
+                    <td><label for="mobile">Mobile</label></td>
+                    <td><input type="text" id="mobile" name="mobile" maxlength="255"></td>
+                </tr>
+                <tr>
+                    <td><label for="address1">Address line 1</label></td>
+                    <td><input type="text" id="address1" name="address1" maxlength="50"></td>
+                </tr>
+                <tr>
+                    <td><label for="address2">Address line 2</label></td>
+                    <td><input type="text" id="address2" name="address2" maxlength="50"></td>
+                </tr>
+                <tr>
+                    <td><label for="postalCode">Postal Code</label></td>
+                    <td><input type="text" id="postalCode" name="postalCode" maxlength="10"></td>
+                </tr>
+                <tr>
+                    <td><label>Status</label></td>
+                    <td><input type="text" id="status" name="status" value="New" disabled></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
+                        <button type="submit" id="actionButton" class='round-button'>Submit</button>
+                    </td>
+                </tr>
+            </table>
+
+            <input type=hidden id="pharmacistId" name="pharmacistId" value="">
+            <input type=hidden id="updatedAt" name="updatedAt" value="">
+
+        </form>
+
+        <script src="config/config.js"></script>
+
+        <script>
+
+                            const pharmacistId = new URLSearchParams(window.location.search).get('pharmacistId');
+                            const actionMode = new URLSearchParams(window.location.search).get('mode');
+
+// Function to go back to the previous page
+                            function goBack() {
+                                window.history.back();
+                            }
+
+// When the page loads, get the action from the URL and update the button label
+                            window.onload = function () {
+                                const actionButton = document.getElementById('actionButton');
+
+                                if (actionMode.toUpperCase() === 'EDIT') {
+                                    actionButton.textContent = 'Submit';
+                                } else if (actionMode.toUpperCase() === 'DELETE') {
+                                    actionButton.textContent = 'Delete';
+                                    document.querySelectorAll('input').forEach(input => {
+                                        input.setAttribute('disabled', true);
+                                    });
+                                } else {
+                                    actionButton.hidden = true;
+                                    document.querySelectorAll('input').forEach(input => {
+                                        input.setAttribute('disabled', true);
+                                    });
+                                }
+                            };
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                if (pharmacistId) {
+                                    loadPharmacistData(pharmacistId);
+                                }
+
+                                document.getElementById('pharmacistForm').addEventListener('submit', handleFormSubmit);
+                            });
+
+                            async function loadPharmacistData(pharmacistId) {
+                                const mToken = localStorage.getItem('mAuthToken');
+                                const errorContainer = document.getElementById("error");
+                                errorContainer.innerHTML = ''; // Clear any error messages
+
+//                try {
+                                if (!mToken) {
+                                    alert('Session expired. Please log in again.');
+                                    return;
+                                }
+
+                                const response = await fetch(config.apiPharmacistDetailUrl + '?' + pharmacistId, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': 'Bearer ' + mToken
+                                    }
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+
+                                if (response.status === 403 || response.status === 401) {
+                                    throw new Error('Session expired or unauthorized. Please log in again. status:' + response.status);
+                                    localStorage.removeItem('mAuthToken');
+
+                                    // Redirect to login page or prompt for login
+                                    window.location.href = "mlogon.html";
+                                }
+
+                                const responseBody = await response.json();
+
+                                if (responseBody.status === 'error') {
+                                    throw new Error(`Error Code: ${responseBody.errorCode}`);
+                                }
+
+                                const pharmacistData = responseBody.data;
+
+                                Object.keys(pharmacistData).forEach(key => {
+                                    const input = document.getElementById(key);
+                                    if (input && pharmacistData[key] !== undefined && pharmacistData[key] !== null) {
+                                        input.value = pharmacistData[key];
+                                    }
+                                });
+
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load pharmacist data: ' + error;
+//                }
+                            }
+
+                            async function handleFormSubmit(event) {
+                                const mToken = localStorage.getItem('mAuthToken');
+                                const errorContainer = document.getElementById("error");
+                                errorContainer.innerHTML = ''; // Clear any error messages
+//                try {
+
+                                if (!mToken) {
+                                    alert('Session expired. Please log in again.');
+                                    return;
+                                }
+
+                                event.preventDefault();
+
+                                const pharmacistData = {
+                                    id: 8,
+                                    firstName: document.getElementById('firstName').value,
+                                    lastName: document.getElementById('lastName').value,
+                                    mobile: document.getElementById('mobile').value,
+                                    address1: document.getElementById('address1').value,
+                                    address2: document.getElementById('address2').value,
+                                    postalCode: document.getElementById('postalCode').value,
+                                    updatedAt: document.getElementById('updatedAt').value
+                                };
+
+                                const method = pharmacistId ? 'POST' : 'POST';
+                                const url = pharmacistId ? config.apiPharmacistUpdateUrl + '?' + document.getElementById('pharmacistId').value : config.apiPharmacistAddUrl;
+
+                                const response = await fetch(url, {
+                                    method: method,
+                                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + mToken},
+                                    body: JSON.stringify(pharmacistData)
+                                });
+
+                                if (response.ok) {
+                                    alert('Pharmacist record has been saved successfully.');
+                                    window.location.href = 'pharmacist.html';
+                                } else {
+                                    alert('Failed to save pharmacist record.');
+                                }
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load pharmacist data: ' + error;
+//                }
+                            }
+        </script>
+    </body>
+</html>

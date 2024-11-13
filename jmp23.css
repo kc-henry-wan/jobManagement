@@ -1,109 +1,170 @@
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-//            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .login-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        .login-container h2 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        
-        .login-container button {
-            width: 98%;
-            padding: 10px;
-            background-color: #28a745;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        
-        .login-container button:hover {
-            background-color: #218838;
-        }
-        
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            text-align: center;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+.login-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-        label {
-            margin-right: 10px;
-        }
+.login-container button {
+    width: 98%;
+    padding: 10px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
 
-        .table1 {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+.login-container button:hover {
+    background-color: #218838;
+}
 
-        .table1, th, td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
+.error-message, .error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
 
-        th {
-            background-color: #f2f2f2;
-        }
-        
-        .redText {
-            color: red;
-            font-weight: bold;
-        }
-        .greenText {
-            color: green;
-            font-weight: bold;
-        }
-        .job-negotiate-reason {
-            text-align: left;            
-        }
+label {
+    margin-right: 10px;
+}
 
-        .filter-container {
-            margin-bottom: 20px;
-        }
-
-        .new-button-container {
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+.div-branch {
+    margin-top: 10px;
+    text-align: left;
+}
 
 
-        .round-button {
-            background-color: #007BFF; /* Blue background */
-            color: white; /* White text */
-            border: none; /* No border */
-            border-radius: 50%; /* Fully rounded */
-            padding: 10px 25px; /* Padding for size */
-            font-size: 16px; /* Font size */
-            cursor: pointer; /* Pointer cursor on hover */
-            transition: background-color 0.3s; /* Transition for hover effect */
-            outline: none; /* Remove outline */
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
+/* Scrollable table */
+.table-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 600px;
+    border: 1px solid #ccc;
+}
 
-        .round-button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-        }
+.table1 {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table1, th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.redText {
+    color: red;
+    font-weight: bold;
+}
+.greenText {
+    color: green;
+    font-weight: bold;
+}
+.job-negotiate-reason {
+    text-align: left;
+}
+
+.filter-container {
+    margin-bottom: 20px;
+}
+
+.new-button-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.round-button {
+    background-color: #007BFF; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 50%; /* Fully rounded */
+    padding: 10px 25px; /* Padding for size */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Transition for hover effect */
+    outline: none; /* Remove outline */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.round-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.cancel-button {
+    background-color: #333333; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 50%; /* Fully rounded */
+    padding: 10px 25px; /* Padding for size */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Transition for hover effect */
+    outline: none; /* Remove outline */
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.cancel-button:hover {
+    background-color: #999999; /* Darker blue on hover */
+}
+.form-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+.form-table td {
+    padding: 8px;
+}
+.form-table label {
+    font-weight: bold;
+}
+.form-table input, .form-table select , .form-table textarea {
+    width: 100%;
+}
+
+.form-table input:disabled, textarea:disabled, select:disabled    {
+    border: none;                    /* Removes border */
+    background-color: transparent;   /* Makes background transparent */
+    color: inherit;                  /* Inherits text color from the parent */
+    font-size: inherit;              /* Matches the parent font size */
+    font-family: inherit;            /* Matches the parent font family */
+    padding: 0;                      /* Removes padding */
+    outline: none;                   /* Removes focus outline */
+    cursor: not-allowed;             /* Shows a 'not-allowed' cursor */
+    pointer-events: none;            /* Disables user interaction */
+}
+

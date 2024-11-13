@@ -11,9 +11,6 @@ const config = {
     apiBranchDetailUrl: 'http://localhost:70/api/mock/10',
     apiBranchAddUrl: 'http://localhost:70/api/mock/',
     apiBranchUpdateUrl: 'http://localhost:70/api/mock/',
-    apiPharmacistUrl:'http://localhost:70/api/mock/11',
-    apiPharmacistDetailUrl:'http://localhost:70/api/mock/12',
-    apiPharmacistUpdateUrl:'http://localhost:70/api/mock/',
 };
 
 

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Add/Update Job</title>
+        <link rel="stylesheet" href="jmp23.css">
+        <style>
+        </style>
+    </head>
+    <body>
+
+        <h1>Add/Update Job</h1>
+        <form id="jobForm">
+
+            <div id="error" class="error-message"></div>
+
+            <table class="form-table">
+                <tr>
+                    <td><label>Job Reference</label></td>
+                    <td><input type="text" id="jobRef" name="jobRef" value="" disabled></td>
+                </tr>
+                <tr>
+                    <td><label>Pharmacist Name</label></td>
+                    <td><input type="text" id="pharmacistFirstName" name="pharmacistFirstName" value="" disabled>
+                        <input type="text" id="pharmacistLastName" name="pharmacistLastName" value="" disabled>                        
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="branchName">Branch</label></td>
+                    <td>
+                        <input type=hidden id="branchName" name="branchName" disabled>
+                        <input type=hidden id="branchAddress1" name="branchAddress1" disabled>
+                        <input type=hidden id="branchAddress2" name="branchAddress2" disabled>
+                        <input type=hidden id="branchPostalCode" name="branchPostalCode" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="jobDate">Job Date / Time</label></td>
+                    <td>
+                        <input type="text" id="jobDate" name="jobDate" disabled>
+                        <input type="text" id="jobStartTime" name="jobStartTime" disabled>
+                        <input type="text" id="jobEndTime" name="jobEndTime" disabled>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="totalWorkHour">Total Work Hour</label></td>
+                    <td><input type="text" id="totalWorkHour" name="totalWorkHour" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="lunchArrangement">Lunch Arrangement</label></td>
+                    <td><input type="text" id="lunchArrangement" name="lunchArrangement" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="parkingOption">Parking Option</label></td>
+                    <td><input type="text" id="parkingOption" name="parkingOption" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="ratePerMile">Rate Per Mile</label></td>
+                    <td><input type="text" id="ratePerMile" name="ratePerMile" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="reason">Reason</label></td>
+                    <td><textarea id="reason" name="reason" maxlength="255" rows="8" disabled></textarea></td>
+                </tr>
+
+                <tr>
+                    <td><label for="originalHourlyRate">Original Hourly Rate</label></td>
+                    <td><input type="text" id="originalHourlyRate" name="originalHourlyRate" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="originalTotalPaid">original Total Paid</label></td>
+                    <td><input type="number" id="originalTotalPaid" name="originalTotalPaid" disabled></td>
+                </tr> 
+                <tr>
+                    <td><label for="purposedHourlyRate">Purposed Hourly Rate</label></td>
+                    <td><input type="text" id="purposedHourlyRate" name="purposedHourlyRate" disabled></td>
+                </tr>
+                <tr>
+                    <td><label for="purposedTotalPaid">Purposed Total Paid</label></td>
+                    <td><input type="number" id="purposedTotalPaid" name="purposedTotalPaid" disabled></td>
+                </tr>
+
+                <tr>
+                    <td><label for="counterHourlyRate">Counter Hourly Rate</label></td>
+                    <td><input type="number" id="counterHourlyRate" name="counterHourlyRate" step="0.01" min="0.01"></td>
+                </tr>
+                <tr>
+                    <td><label for="counterTotalPaid">Counter Total Paid</label></td>
+                    <td><input type="number" id="counterTotalPaid" name="counterTotalPaid" step="0.01" min="0.01"></td>
+                </tr>
+
+                <tr>
+                    <td><label>Status</label></td>
+                    <td><input type="text" id="status" name="status" value="New" disabled></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
+                        <button type="submit" id="actionButton" class="round-button">Submit</button>
+                    </td>
+                </tr>
+            </table>
+
+            <input type=hidden id="negotiationId" name="negotiationId" value="">
+            <input type=hidden id="jobId" name="jobId" value="">
+            <input type=hidden id="updatedAt" name="updatedAt" value="">
+
+        </form>
+
+        <script src="config/config.js"></script>
+
+        <script>
+        const negotiateId = new URLSearchParams(window.location.search).get('negotiateId');
+        const actionMode = new URLSearchParams(window.location.search).get('mode');
+
+// Function to go back to the previous page
+        function goBack() {
+            window.history.back();
+        }
+
+// When the page loads, get the action from the URL and update the button label
+        window.onload = function () {
+            const actionButton = document.getElementById('actionButton');
+
+            if (actionMode.toUpperCase() === 'ADMINAPPROVE') {
+                actionButton.textContent = 'Approve';
+            } else if (actionMode.toUpperCase() === 'ADMINREJECT') {
+                actionButton.textContent = 'Reject'; 
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (negotiateId) {
+                loadJobData(negotiateId);
+            }
+
+            document.getElementById('jobForm').addEventListener('submit', handleFormSubmit);
+        });
+        async function loadJobData(negotiateId) {
+            const mToken = localStorage.getItem('mAuthToken');
+            const errorContainer = document.getElementById("error");
+            errorContainer.innerHTML = ''; // Clear any error messages
+
+//                try {
+            if (!mToken) {
+                alert('Session expired. Please log in again.');
+                return;
+            }
+
+            const response = await fetch(config.apiNegotiateDetailUrl + '?' + negotiateId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + mToken
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            if (response.status === 403 || response.status === 401) {
+                throw new Error('Session expired or unauthorized. Please log in again. status:' + response.status);
+                localStorage.removeItem('mAuthToken');
+                // Redirect to login page or prompt for login
+                window.location.href = "mlogon.html";
+            }
+
+            const responseBody = await response.json();
+            if (responseBody.status === 'error') {
+                throw new Error(`Error Code: ${responseBody.errorCode}`);
+            }
+
+            const jobData = responseBody.data;
+            Object.keys(jobData).forEach(key => {
+                const input = document.getElementById(key);
+                if (input && jobData[key] !== undefined && jobData[key] !== null) {
+                    input.value = jobData[key];
+                }
+            });
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load data: ' + error;
+//                }
+        }
+
+        async function handleFormSubmit(event) {
+            const mToken = localStorage.getItem('mAuthToken');
+            const errorContainer = document.getElementById("error");
+            errorContainer.innerHTML = ''; // Clear any error messages
+//                try {
+
+            if (!mToken) {
+                alert('Session expired. Please log in again.');
+                return;
+            }
+
+            event.preventDefault();
+            const jobData = {
+                id: 8,
+                mode: actionMode,
+                jobId: document.getElementById('jobId:').value,
+                counterHourlyRate: document.getElementById('counterHourlyRate').value,
+                counterTotalPaid: document.getElementById('counterTotalPaid').value,
+                updatedAt: document.getElementById('updatedAt').value
+            };
+            const url = config.apiNegotiateUpdateUrl + '?' + document.getElementById('nogotiationId').value;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + mToken},
+                body: JSON.stringify(jobData)
+            });
+            if (response.ok) {
+                alert('record has been saved successfully.');
+                window.location.href = 'negotiation.html';
+            } else {
+                alert('Failed to save record.');
+            }
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load data: ' + error;
+//                }
+        }
+        </script>
+    </body>
+</html>
