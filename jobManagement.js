@@ -29,7 +29,9 @@ async function fetchJobs() {
 
     if (!mToken) {
         alert('Session expired. Please log in again.');
-        return;
+
+            // Redirect to login page or prompt for login
+            window.location.href = "mlogon.html";
     }
 
     const pharmacyCode = document.getElementById("pharmacyCode").value;

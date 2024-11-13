@@ -76,6 +76,5 @@ async function login() {
     } catch (error) {
         // Handle network or server errors
         errorMessage.innerHTML = "An error occurred. Please try again later.";
-        console.error("Error logging in:", error);
     }
 }
