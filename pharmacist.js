@@ -81,6 +81,7 @@ async function fetchData() {
             const row = document.createElement('tr');
             row.innerHTML = `
                         <td>${pharmacist.firstName}   ${pharmacist.lastName}</td>
+                        <td>${pharmacist.email}</td>
                         <td>${pharmacist.mobile}</td>
                         <td>${pharmacist.address1} <br> ${pharmacist.address2 || ''} </td>
                         <td>${pharmacist.postalCode}</td>
