@@ -14,6 +14,9 @@ const config = {
     apiPharmacistUrl:'http://localhost:70/api/mock/11',
     apiPharmacistDetailUrl:'http://localhost:70/api/mock/12',
     apiPharmacistUpdateUrl:'http://localhost:70/api/mock/',
+    apiPharmacistImageListUrl:'http://localhost:70/api/mock/13',
+    apiPharmacistImageUrl:'http://localhost:70/api/mock/14/',
+            
 };
 
 
