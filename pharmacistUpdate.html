@@ -14,7 +14,7 @@
 
             <div id="error" class="error-message"></div>
 
-            <table class="form-table">
+            <table class="form-table" id="imageTable">
                 <tr>
                     <td><label for="firstName">First Name</label></td>
                     <td><input type="text" id="firstName" name="firstName" maxlength="255"></td>
@@ -42,15 +42,14 @@
                 <tr>
                     <td><label>Status</label></td>
                     <td><input type="text" id="status" name="status" value="New" disabled></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
-                        <button type="submit" id="actionButton" class='round-button'>Submit</button>
-                    </td>
-                </tr>
+                </tr>                
             </table>
 
+            <div align="center">
+                <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
+                <button type="submit" id="actionButton" class='round-button'>Submit</button>
+            </div>
+                        
             <input type=hidden id="pharmacistId" name="pharmacistId" value="">
             <input type=hidden id="updatedAt" name="updatedAt" value="">
 
@@ -90,6 +89,7 @@
                             document.addEventListener('DOMContentLoaded', function () {
                                 if (pharmacistId) {
                                     loadPharmacistData(pharmacistId);
+                                    loadPharmacistImageList(pharmacistId);
                                 }
 
                                 document.getElementById('pharmacistForm').addEventListener('submit', handleFormSubmit);
@@ -146,6 +146,81 @@
 //                }
                             }
 
+                            async function loadPharmacistImageList(pharmacistId) {
+                                const mToken = localStorage.getItem('mAuthToken');
+                                const errorContainer = document.getElementById("error");
+                                errorContainer.innerHTML = ''; // Clear any error messages
+
+//                try {
+                                if (!mToken) {
+                                    alert('Session expired. Please log in again.');
+                                    return;
+                                }
+
+                                const response = await fetch(config.apiPharmacistImageListUrl + '?' + pharmacistId, {
+                                    method: 'GET',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Authorization': 'Bearer ' + mToken
+                                    }
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+
+                                if (response.status === 403 || response.status === 401) {
+                                    throw new Error('Session expired or unauthorized. Please log in again. status:' + response.status);
+                                    localStorage.removeItem('mAuthToken');
+
+                                    // Redirect to login page or prompt for login
+                                    window.location.href = "mlogon.html";
+                                }
+
+                                const responseBody = await response.json();
+
+                                if (responseBody.status === 'error') {
+                                    throw new Error(`Error Code: ${responseBody.errorCode}`);
+                                }
+
+                                const imageListData = responseBody.data;
+                                
+                                if(imageListData.length > 0){
+                                        displayImages(imageListData);
+                                }
+
+//                } catch (error) {
+//                    errorContainer.textContent = 'Failed to load pharmacist data: ' + error;
+//                }
+                            }
+
+// Display images using the viewImage API
+function displayImages(imageListData) {
+    const tableBody = document.getElementById('imageTable');
+
+imageListData.forEach(image => {
+        const row = document.createElement('tr');
+
+        // Create the ID cell
+        const idCell = document.createElement('td');
+        idCell.textContent = image.imageType;
+        
+        // Create the image cell
+        const imgCell = document.createElement('td');
+        const img = document.createElement('img');
+        img.src = config.apiPharmacistImageUrl + image.imageId; // Use imageId in URL
+        img.alt = `Image ${image.imageId}`;
+        imgCell.appendChild(img);
+
+        // Append cells to the row
+        row.appendChild(idCell);
+        row.appendChild(imgCell);
+
+        // Append the row to the table body
+        tableBody.appendChild(row);
+    });
+
+}
                             async function handleFormSubmit(event) {
                                 const mToken = localStorage.getItem('mAuthToken');
                                 const errorContainer = document.getElementById("error");

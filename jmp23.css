@@ -168,3 +168,13 @@ th {
     pointer-events: none;            /* Disables user interaction */
 }
 
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.image-item {
+    width: 200px;
+    height: auto;
+}
