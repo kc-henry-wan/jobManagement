@@ -91,25 +91,75 @@ async function fetchJobs() {
         // Populate table with job data
         jobList.forEach(job => {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                        <td>${job.jobRef}</td>
-                        <td>${job.branchName}</td>
-                        <td>${job.jobDate} <br> ${job.jobStartTime} - ${job.jobEndTime}</td>
-                        <td>${job.totalWorkHour}</td>
-                        <td><b>${job.hourlyRate.toFixed(2)} / ${job.totalPaid.toFixed(2)}</td>
-                        <td>${job.lunchArrangement || ''}</td>
-                        <td>${job.parkingOption || ''}</td>
-                        <td>${job.ratePerMile.toFixed(2)}</td>
-                        <td>${job.branchAddress1} <br> ${job.branchAddress2 || ''} <br> ${job.branchPostalCode}</td>
-                        <td>${job.status}</td>
-                        <td>${job.pharmacistLastName || ''} ${job.pharmacistFirstName || ''}</td>
-                        <td>
-                            <button class='round-button'onclick=viewJob('${job.jobId}')>Detail</button>
-                            <button class='round-button'onclick=editJob('${job.jobId}')>Edit</button>
-                            <button class='round-button'onclick=deleteJob('${job.jobId}')>Delete</button>
-                        </td>
-                    </td>
-                    `;
+
+            const jobRefCell = document.createElement('td');
+            jobRefCell.textContent = job.jobRef;
+
+            const branchNameCell = document.createElement('td');
+            branchNameCell.textContent = job.branchName;
+
+            const jobDateCell = document.createElement('td');
+            jobDateCell.innerHTML = job.jobDate + '<br>' + job.jobStartTime + " - " + job.jobEndTime;
+
+            const totalPaidHourCell = document.createElement('td');
+            totalPaidHourCell.textContent = job.totalWorkHour;
+
+            const originalCell = document.createElement('td');
+            originalCell.textContent = job.hourlyRate.toFixed(2) + " / " + job.totalPaid.toFixed(2);
+
+            const lunchArrangementCell = document.createElement('td');
+            lunchArrangementCell.textContent = job.lunchArrangement;
+
+            const parkingCell = document.createElement('td');
+            parkingCell.textContent = job.parkingOption;
+
+            const ratePerMileCell = document.createElement('td');
+            ratePerMileCell.textContent = job.ratePerMile.toFixed(2);
+
+            const addressCell = document.createElement('td');
+            addressCell.innerHTML = job.branchAddress1 + '<br>' + (job.branchAddress2 != null ? job.branchAddress2 : "") + '<br>' + job.branchPostalCode;
+
+            const statusCell = document.createElement('td');
+            statusCell.textContent = job.status;
+
+            const jobPharmacistCell = document.createElement('td');
+            jobPharmacistCell.textContent = (job.pharmacistLastName != null ? job.pharmacistLastName : "") + ' ' + (job.pharmacistFirstName != null ? job.pharmacistFirstName : "")
+
+            let actionButton; // Variable for the action button
+            switch (job.status) {
+                case 'Open':
+                    actionButton = '<button class="round-button" onclick="viewJob(' + job.jobId 
+                            + ')">Detail</button><button class="round-button" onclick="editJob(' + job.jobId 
+                            + ')">Edit</button><button class="round-button" onclick="deleteJob(' + job.jobId 
+                            + ')">Delete</button>';
+                    break;
+                case 'Assigned':
+                    actionButton = '<button class="round-button" onclick="viewJob(' + job.jobId + ')">Detail</button>';
+                case 'Completed':
+                    actionButton = '<button class="round-button" onclick="viewJob(' + job.jobId + ')">Detail</button>';
+                default:
+                    actionButton = ''; // No button for other statuses
+            }
+
+            // Create a new cell for the action button
+            const actionCell = document.createElement('td');
+            actionCell.innerHTML = actionButton; // Set innerHTML to add the button
+
+            // Append cells to the row
+            row.appendChild(jobRefCell);
+            row.appendChild(branchNameCell);
+            row.appendChild(jobDateCell);
+            row.appendChild(totalPaidHourCell);
+            row.appendChild(originalCell);
+            row.appendChild(lunchArrangementCell);
+            row.appendChild(parkingCell);
+            row.appendChild(ratePerMileCell);
+            row.appendChild(addressCell);
+            row.appendChild(statusCell);
+            row.appendChild(jobPharmacistCell);
+            row.appendChild(actionCell); // Append the action cell to the row
+
+            // Append the row to the tbody
             tableBody.appendChild(row);
         });
 

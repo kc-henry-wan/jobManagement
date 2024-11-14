@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                     <td><label>Status</label></td>
-                    <td><input type="text" id="status" name="status" value="New" disabled></td>
+                    <td><input type="text" id="status" name="status" value="Open" disabled></td>
                 </tr>
                 <tr>
                     <td><label>Job Reference</label></td>
@@ -266,6 +266,7 @@
 
                                 const jobData = {
                                     id: 8,
+                                    action:actionMode,
                                     description: document.getElementById('description').value,
                                     pharmacyGroupId: document.getElementById('pharmacyGroupId').value,
                                     pharmacyBranchId: document.getElementById('branchSelection').value,

@@ -6,6 +6,11 @@ body {
     align-items: center;
     height: 100vh;
 }
+
+h1 {
+   text-align: center
+}
+
 .login-container {
     background-color: #fff;
     padding: 20px;

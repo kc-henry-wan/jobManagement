@@ -13,11 +13,15 @@
         <div class="filter-container">
             <input type="hidden" id="pharmacyCode" value="WBP"/>
 
+            <label for="statusSelection">Status:</label>
             <select id="statusSelection" name="statusSelection">
                 <option value="">All</option>
-                <option value="Open" selected>Active</option>
+                <option value="Active" selected>Active</option>
                 <option value="Deleted">Deleted</option>
             </select>
+            
+            <label for="term">Search:</label>
+            <input type="text" id="term" name="term" value=""/>
 
             <button class='round-button' onclick="fetchData()">Fetch Data</button>
         </div>

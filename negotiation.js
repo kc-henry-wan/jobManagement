@@ -101,13 +101,13 @@ async function fetchJobs() {
             switch (job.status) {
                 case 'New':
                     actionButton = '<button class="round-button" onclick="acceptNegotiate(' + job.negotiationId 
-                            + ')">Accept</button><button class="round-button" onclick="editNegotiate(' + job.negotiationId 
-                            + ')">Edit</button><button class="round-button" onclick="counterNegotiate(' + job.negotiationId 
+                            + ')">Accept</button><button class="round-button" onclick="counterNegotiate(' + job.negotiationId 
                             + ')">Counter propose</button><button class="round-button" onclick="rejectNegotiate(' + job.negotiationId 
                             + ')">Reject</button>';
                     break;
                 case 'Admin Accepted':
                 case 'Counter Purposed':
+                    actionButton = '<button class="round-button" onclick="editNegotiate(' + job.negotiationId + ')">Edit</button>';
                 case 'Pharmacist Accepted':
                 case 'Admin Rejected':
                 case 'Job Picked by others':

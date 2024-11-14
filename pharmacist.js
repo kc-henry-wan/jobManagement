@@ -25,7 +25,8 @@ async function fetchData() {
     }
 
     const pharmacyCode = document.getElementById("pharmacyCode").value;
-    const status = document.getElementById("statusSelection").value;
+    const status = document.getElementById("statusSelection").value;;
+    const term = document.getElementById("term").value;
     const errorContainer = document.getElementById("error");
     const tableBody = document.querySelector("#pharmacistTable tbody");
 
@@ -40,7 +41,8 @@ async function fetchData() {
     try {
         const queryParams = new URLSearchParams({
             pharmacyCode: pharmacyCode,
-            status: status
+            status: status,
+            term:term
         }).toString();
 
         const response = await fetch(config.apiPharmacistUrl+'?'+queryParams, {
