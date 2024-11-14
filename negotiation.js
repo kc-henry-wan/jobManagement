@@ -108,6 +108,7 @@ async function fetchJobs() {
                 case 'Admin Accepted':
                 case 'Counter Purposed':
                     actionButton = '<button class="round-button" onclick="editNegotiate(' + job.negotiationId + ')">Edit</button>';
+                    break;
                 case 'Pharmacist Accepted':
                 case 'Admin Rejected':
                 case 'Job Picked by others':

@@ -135,8 +135,10 @@ async function fetchJobs() {
                     break;
                 case 'Assigned':
                     actionButton = '<button class="round-button" onclick="viewJob(' + job.jobId + ')">Detail</button>';
+                    break;
                 case 'Completed':
                     actionButton = '<button class="round-button" onclick="viewJob(' + job.jobId + ')">Detail</button>';
+                    break;
                 default:
                     actionButton = ''; // No button for other statuses
             }
