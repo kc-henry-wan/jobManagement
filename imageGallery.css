@@ -1,0 +1,92 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;  /* Aligns items to the top */
+  margin: 20px;
+}
+
+.table-container {
+  width: 40%; /* Adjust based on your desired width */
+  min-width: 400px;
+  padding-right: 20px;
+}
+
+.gallery-container {
+  width: 60%; /* Adjust based on your desired width */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Automatically adjusts column layout */
+  gap: 10px;
+}
+
+.gallery-title{
+  width: 100%;
+  text-align: left;
+}
+
+.gallery-item .image-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.gallery-item .thumbnail {
+  max-width: 200px;
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: pointer; /* Indicating clickable images */
+}
+
+/* Full-screen Overlay */
+.overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Make sure it appears on top */
+}
+
+.overlay img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .table-container {
+    width: 100%;
+  }
+
+  .gallery-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    flex-direction: column;
+  }
+
+  .gallery-item {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+}

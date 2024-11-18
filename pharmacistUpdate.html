@@ -2,272 +2,78 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Add/Update Pharmacist</title>
+        <title>Pharmacist Record</title>
         <link rel="stylesheet" href="jmp23.css">
+        <link rel="stylesheet" href="imageGallery.css">
         <style>
         </style>
     </head>
     <body>
 
-        <h1>Add/Update Pharmacist</h1>
-        <form id="pharmacistForm">
+        <h1 id="pageTitle">Pharmacist Record</h1>
+        <div class="container">
+            <div class="table-container">
 
-            <div id="error" class="error-message"></div>
+                <div id="error" class="error-message"></div>
+                <form id="pharmacistForm">
+                    <table class="form-table" >
+                        <tr>
+                            <td><label for="firstName">First Name</label></td>
+                            <td><input type="text" id="firstName" name="firstName" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="lastName">Last Name</label></td>
+                            <td><input type="text" id="lastName" name="lastName" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="email">Email</label></td>
+                            <td><input type="text" id="email" name="email" maxlength="100" disabled></td>
+                        </tr>
+                        <tr>
+                            <td><label for="mobile">Mobile</label></td>
+                            <td><input type="text" id="mobile" name="mobile" maxlength="20"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="address1">Address line 1</label></td>
+                            <td><input type="text" id="address1" name="address1" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="address2">Address line 2</label></td>
+                            <td><input type="text" id="address2" name="address2" maxlength="50"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="postalCode">Postal Code</label></td>
+                            <td><input type="text" id="postalCode" name="postalCode" maxlength="10"></td>
+                        </tr>
+                        <tr>
+                            <td><label>Status</label></td>
+                            <td><input type="text" id="status" name="status" value="New" disabled></td>
+                        </tr>                
+                    </table>
 
-            <table class="form-table" id="imageTable">
-                <tr>
-                    <td><label for="firstName">First Name</label></td>
-                    <td><input type="text" id="firstName" name="firstName" maxlength="50"></td>
-                </tr>
-                <tr>
-                    <td><label for="lastName">Last Name</label></td>
-                    <td><input type="text" id="lastName" name="lastName" maxlength="50"></td>
-                </tr>
-                <tr>
-                    <td><label for="email">Email</label></td>
-                    <td><input type="text" id="email" name="email" maxlength="100" disabled></td>
-                </tr>
-                <tr>
-                    <td><label for="mobile">Mobile</label></td>
-                    <td><input type="text" id="mobile" name="mobile" maxlength="20"></td>
-                </tr>
-                <tr>
-                    <td><label for="address1">Address line 1</label></td>
-                    <td><input type="text" id="address1" name="address1" maxlength="50"></td>
-                </tr>
-                <tr>
-                    <td><label for="address2">Address line 2</label></td>
-                    <td><input type="text" id="address2" name="address2" maxlength="50"></td>
-                </tr>
-                <tr>
-                    <td><label for="postalCode">Postal Code</label></td>
-                    <td><input type="text" id="postalCode" name="postalCode" maxlength="10"></td>
-                </tr>
-                <tr>
-                    <td><label>Status</label></td>
-                    <td><input type="text" id="status" name="status" value="New" disabled></td>
-                </tr>                
-            </table>
+                    <div align="center">
+                        <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
+                        <button type="submit" id="actionButton" class='round-button'>Submit</button>
+                    </div>
 
-            <div align="center">
-                <button type="button" id="cancelButton" class="cancel-button" onclick="goBack()">Cancel</button>
-                <button type="submit" id="actionButton" class='round-button'>Submit</button>
+                    <input type=hidden id="pharmacistId" name="pharmacistId" value="">
+                    <input type=hidden id="updatedAt" name="updatedAt" value="">
+
+                </form>
             </div>
-                        
-            <input type=hidden id="pharmacistId" name="pharmacistId" value="">
-            <input type=hidden id="updatedAt" name="updatedAt" value="">
+            <div class="gallery-container">
+                
+            </div>
+        </div>
 
-        </form>
+        <!-- Full Image Overlay -->
+        <div class="overlay" id="image-overlay">
+            <span class="close" id="close-overlay">&times;</span>
+            <img src="" id="full-image" alt="Full Image">
+        </div>
 
         <script src="config/config.js"></script>
+        <script src="pharmacistUpdate.js"></script>
 
-        <script>
-
-                            const pharmacistId = new URLSearchParams(window.location.search).get('pharmacistId');
-                            const actionMode = new URLSearchParams(window.location.search).get('mode');
-
-// Function to go back to the previous page
-                            function goBack() {
-                                window.history.back();
-                            }
-
-// When the page loads, get the action from the URL and update the button label
-                            window.onload = function () {
-                                const actionButton = document.getElementById('actionButton');
-
-                                if (actionMode.toUpperCase() === 'EDIT') {
-                                    actionButton.textContent = 'Submit';
-                                } else if (actionMode.toUpperCase() === 'DELETE') {
-                                    actionButton.textContent = 'Delete';
-                                    document.querySelectorAll('input').forEach(input => {
-                                        input.setAttribute('disabled', true);
-                                    });
-                                } else {
-                                    actionButton.hidden = true;
-                                    document.querySelectorAll('input').forEach(input => {
-                                        input.setAttribute('disabled', true);
-                                    });
-                                }
-                            };
-
-                            document.addEventListener('DOMContentLoaded', function () {
-                                if (pharmacistId) {
-                                    loadPharmacistData(pharmacistId);
-                                    loadPharmacistImageList(pharmacistId);
-                                }
-
-                                document.getElementById('pharmacistForm').addEventListener('submit', handleFormSubmit);
-                            });
-
-                            async function loadPharmacistData(pharmacistId) {
-                                const mToken = localStorage.getItem('mAuthToken');
-                                const errorContainer = document.getElementById("error");
-                                errorContainer.innerHTML = ''; // Clear any error messages
-
-//                try {
-                                if (!mToken) {
-                                    alert('Session expired. Please log in again.');
-                                    return;
-                                }
-
-                                const response = await fetch(config.apiPharmacistDetailUrl + '?' + pharmacistId, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': 'Bearer ' + mToken
-                                    }
-                                });
-
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error! status: ${response.status}`);
-                                }
-
-                                if (response.status === 403 || response.status === 401) {
-                                    throw new Error('Session expired or unauthorized. Please log in again. status:' + response.status);
-                                    localStorage.removeItem('mAuthToken');
-
-                                    // Redirect to login page or prompt for login
-                                    window.location.href = "mlogon.html";
-                                }
-
-                                const responseBody = await response.json();
-
-                                if (responseBody.status === 'error') {
-                                    throw new Error(`Error Code: ${responseBody.errorCode}`);
-                                }
-
-                                const pharmacistData = responseBody.data;
-
-                                Object.keys(pharmacistData).forEach(key => {
-                                    const input = document.getElementById(key);
-                                    if (input && pharmacistData[key] !== undefined && pharmacistData[key] !== null) {
-                                        input.value = pharmacistData[key];
-                                    }
-                                });
-
-//                } catch (error) {
-//                    errorContainer.textContent = 'Failed to load pharmacist data: ' + error;
-//                }
-                            }
-
-                            async function loadPharmacistImageList(pharmacistId) {
-                                const mToken = localStorage.getItem('mAuthToken');
-                                const errorContainer = document.getElementById("error");
-                                errorContainer.innerHTML = ''; // Clear any error messages
-
-//                try {
-                                if (!mToken) {
-                                    alert('Session expired. Please log in again.');
-                                    return;
-                                }
-
-                                const response = await fetch(config.apiPharmacistImageListUrl + '?' + pharmacistId, {
-                                    method: 'GET',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': 'Bearer ' + mToken
-                                    }
-                                });
-
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error! status: ${response.status}`);
-                                }
-
-                                if (response.status === 403 || response.status === 401) {
-                                    throw new Error('Session expired or unauthorized. Please log in again. status:' + response.status);
-                                    localStorage.removeItem('mAuthToken');
-
-                                    // Redirect to login page or prompt for login
-                                    window.location.href = "mlogon.html";
-                                }
-
-                                const responseBody = await response.json();
-
-                                if (responseBody.status === 'error') {
-                                    throw new Error(`Error Code: ${responseBody.errorCode}`);
-                                }
-
-                                const imageListData = responseBody.data;
-                                
-                                if(imageListData.length > 0){
-                                        displayImages(imageListData);
-                                }
-
-//                } catch (error) {
-//                    errorContainer.textContent = 'Failed to load pharmacist data: ' + error;
-//                }
-                            }
-
-// Display images using the viewImage API
-function displayImages(imageListData) {
-    const tableBody = document.getElementById('imageTable');
-
-imageListData.forEach(image => {
-        const row = document.createElement('tr');
-
-        // Create the ID cell
-        const idCell = document.createElement('td');
-        idCell.textContent = image.imageType;
-        
-        // Create the image cell
-        const imgCell = document.createElement('td');
-        const img = document.createElement('img');
-        img.src = config.apiPharmacistImageUrl + image.imageId; // Use imageId in URL
-        img.alt = `Image ${image.imageId}`;
-        imgCell.appendChild(img);
-
-        // Append cells to the row
-        row.appendChild(idCell);
-        row.appendChild(imgCell);
-
-        // Append the row to the table body
-        tableBody.appendChild(row);
-    });
-
-}
-                            async function handleFormSubmit(event) {
-                                const mToken = localStorage.getItem('mAuthToken');
-                                const errorContainer = document.getElementById("error");
-                                errorContainer.innerHTML = ''; // Clear any error messages
-//                try {
-
-                                if (!mToken) {
-                                    alert('Session expired. Please log in again.');
-                                    return;
-                                }
-
-                                event.preventDefault();
-
-                                const pharmacistData = {
-                                    id: 8,
-                                    firstName: document.getElementById('firstName').value,
-                                    lastName: document.getElementById('lastName').value,
-                                    mobile: document.getElementById('mobile').value,
-                                    address1: document.getElementById('address1').value,
-                                    address2: document.getElementById('address2').value,
-                                    postalCode: document.getElementById('postalCode').value,
-                                    updatedAt: document.getElementById('updatedAt').value
-                                };
-
-                                const method = pharmacistId ? 'POST' : 'POST';
-                                const url = pharmacistId ? config.apiPharmacistUpdateUrl + '?' + document.getElementById('pharmacistId').value : config.apiPharmacistAddUrl;
-
-                                const response = await fetch(url, {
-                                    method: method,
-                                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + mToken},
-                                    body: JSON.stringify(pharmacistData)
-                                });
-
-                                if (response.ok) {
-                                    alert('Pharmacist record has been saved successfully.');
-                                    window.location.href = 'pharmacist.html';
-                                } else {
-                                    alert('Failed to save pharmacist record.');
-                                }
-//                } catch (error) {
-//                    errorContainer.textContent = 'Failed to load pharmacist data: ' + error;
-//                }
-                            }
-        </script>
     </body>
 </html>
