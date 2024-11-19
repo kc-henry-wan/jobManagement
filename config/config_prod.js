@@ -1,4 +1,3 @@
-// config.js
 const config = {
     apiMLogonUrl: 'http://192.168.68.123:73/api/auth/v1/login',
     apiJobUrl: 'http://192.168.68.123:73/api/v1/job',
@@ -13,6 +12,8 @@ const config = {
     apiBranchAddUrl: 'http://192.168.68.123:73/api/staff/v1/branch',
     apiBranchUpdateUrl: 'http://192.168.68.123:73/api/staff/v1/branch',
     apiPharmacistUrl:'http://192.168.68.123:73/api/staff/v1/pharmacist',
-    apiPharmacistDetailUrl:'http://192.168.68.123:73/api/v1/pharmacist',
-    apiPharmacistUpdateUrl:'http://192.168.68.123:73/api/v1/pharmacist',
+    apiPharmacistDetailUrl:'http://192.168.68.123:73/api/staff/v1/pharmacist',
+    apiPharmacistUpdateUrl:'http://192.168.68.123:73/api/staff/v1/pharmacist',
+    apiPharmacistImageListUrl:'http://192.168.68.123:73/api/staff/v1/pharmacist/',
+    apiPharmacistImageUrl:'http://192.168.68.123:73/api/staff/v1/image/',
 };
