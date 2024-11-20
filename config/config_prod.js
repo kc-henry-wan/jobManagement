@@ -15,5 +15,5 @@ const config = {
     apiPharmacistDetailUrl:'http://192.168.68.123:73/api/staff/v1/pharmacist',
     apiPharmacistUpdateUrl:'http://192.168.68.123:73/api/staff/v1/pharmacist',
     apiPharmacistImageListUrl:'http://192.168.68.123:73/api/staff/v1/image/pharmacist/',
-    apiPharmacistImageUrl:'http://192.168.68.123:73/api/staff/v1/image/',
+    apiPharmacistImageUrl:'http://192.168.68.123:73/api/staff/v1/image/download/',
 };
